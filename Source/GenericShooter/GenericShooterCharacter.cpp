@@ -65,6 +65,9 @@ void AGenericShooterCharacter::SetupPlayerInputComponent(UInputComponent* Player
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGenericShooterCharacter::Look);
+
+		// Shooting
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &AGenericShooterCharacter::DoShoot);
 	}
 	else
 	{
@@ -130,4 +133,9 @@ void AGenericShooterCharacter::DoJumpEnd()
 {
 	// signal the character to stop jumping
 	StopJumping();
+}
+
+void AGenericShooterCharacter::DoShoot()
+{
+	UE_LOG(LogTemp, Error, TEXT("SHOOT!"));
 }

@@ -31,6 +31,12 @@ void AGenericShooterPlayerController::BeginPlay()
 		}
 
 	}
+
+	HUDWidget = CreateWidget<UHUDWidget>(this, HUDWidgetClass);
+	if (HUDWidget)
+	{
+		HUDWidget->AddToViewport();
+	}
 }
 
 void AGenericShooterPlayerController::SetupInputComponent()
