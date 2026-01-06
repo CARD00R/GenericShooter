@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "gun.h"
+#include "Kismet/GameplayStatics.h"
+
 
 // Sets default values
 Agun::Agun()
@@ -14,6 +14,11 @@ Agun::Agun()
 
 	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
 	SkeletalMesh->SetupAttachment(GetRootComponent());
+
+	MuzzleFlashParticleSystem = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
+	MuzzleFlashParticleSystem->SetupAttachment(SkeletalMesh);
+
+	
 }
 
 // Called when the game starts or when spawned
@@ -32,6 +37,7 @@ void Agun::Tick(float DeltaTime)
 void Agun::PullTrigger()
 {
 	UE_LOG(LogTemp, Error, TEXT("BANG"));
+	MuzzleFlashParticleSystem->Activate(true);
 	if (MyController)
 	{
 		FVector ViewPointLocation;
@@ -47,11 +53,15 @@ void Agun::PullTrigger()
 			ViewPointLocation, EndLocation,
 			ECC_GameTraceChannel2,Params);
 
-		DrawDebugLine(GetWorld(),ViewPointLocation, EndLocation,FColor::Red,true);
 		
 		if (IsHit)
 		{
-			DrawDebugSphere(GetWorld(),HitResult.ImpactPoint,5.0f,16.0f,FColor::Red, true);
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),ImpactParticleSystem,HitResult.ImpactPoint, HitResult.ImpactPoint.Rotation());
+
+			if (HitResult.GetActor())
+			{
+				UGameplayStatics::ApplyDamage(HitResult.GetActor(),BulletDamage,MyController,this,UDamageType::StaticClass());
+			}
 		}
 	}
 }

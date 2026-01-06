@@ -54,6 +54,10 @@ void AGenericShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Health = MaxHealth;
+	
+	OnTakeAnyDamage.AddDynamic(this,&AGenericShooterCharacter::TakeDamage);
+	
 	GetMesh()->HideBoneByName("weapon_r",PBO_None);
 	
 	//Weapon Setup
@@ -105,7 +109,7 @@ void AGenericShooterCharacter::Look(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
+	
 	// route the input
 	DoLook(LookAxisVector.X, LookAxisVector.Y);
 }
@@ -156,4 +160,18 @@ void AGenericShooterCharacter::DoShoot()
 {
 	if (Gun)
 		Gun->PullTrigger();
+}
+
+void AGenericShooterCharacter::TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
+{
+	if (isAlive)
+	{
+		Health-=Damage;
+		UE_LOG(LogTemp, Error, TEXT("Taking Damage: %f"), Damage);
+
+		if (Health<=0)
+		{
+			isAlive=false;
+		}
+	}
 }	

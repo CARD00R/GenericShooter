@@ -98,6 +98,14 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	Agun* Gun;
+
+	UFUNCTION()
+	void TakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
+	float MaxHealth = 100.0f;
+	float Health;
+	UPROPERTY(BlueprintReadOnly)
+	bool isAlive = true;
 	
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

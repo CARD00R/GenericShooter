@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 #include "gun.generated.h"
 
 UCLASS()
@@ -31,6 +33,16 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	float GunRange = 5000.0f;
-	
+
+	UPROPERTY(EditDefaultsOnly)
+	float BulletDamage = 10.0f;
+
 	void PullTrigger();
+
+	UPROPERTY(VisibleAnywhere)
+	UNiagaraComponent* MuzzleFlashParticleSystem;
+
+	UPROPERTY(EditAnywhere)
+	UNiagaraSystem* ImpactParticleSystem;
+	
 };
