@@ -20,7 +20,6 @@ Agun::Agun()
 void Agun::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -33,5 +32,27 @@ void Agun::Tick(float DeltaTime)
 void Agun::PullTrigger()
 {
 	UE_LOG(LogTemp, Error, TEXT("BANG"));
+	if (MyController)
+	{
+		FVector ViewPointLocation;
+		FRotator ViewPointRotation;
+		MyController->GetPlayerViewPoint(ViewPointLocation,ViewPointRotation);
+		FVector EndLocation = ViewPointLocation+(ViewPointRotation.Vector()*GunRange);
+
+		FHitResult HitResult;
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(this);
+		Params.AddIgnoredActor(GetOwner());
+		bool IsHit = GetWorld()->LineTraceSingleByChannel(HitResult,
+			ViewPointLocation, EndLocation,
+			ECC_GameTraceChannel2,Params);
+
+		DrawDebugLine(GetWorld(),ViewPointLocation, EndLocation,FColor::Red,true);
+		
+		if (IsHit)
+		{
+			DrawDebugSphere(GetWorld(),HitResult.ImpactPoint,5.0f,16.0f,FColor::Red, true);
+		}
+	}
 }
 

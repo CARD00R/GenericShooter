@@ -62,6 +62,8 @@ void AGenericShooterCharacter::BeginPlay()
 	{
 		Weapon->SetOwner(this);
 		Gun = Cast<Agun>(Weapon);
+		Gun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform, "WeaponSocket");
+		Gun->MyController=GetController();
 	}
 }
 
@@ -154,4 +156,4 @@ void AGenericShooterCharacter::DoShoot()
 {
 	if (Gun)
 		Gun->PullTrigger();
-}
+}	

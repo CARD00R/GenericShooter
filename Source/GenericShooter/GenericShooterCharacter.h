@@ -16,7 +16,7 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 /**
- *  A simple player-controllable third person character
+ *  A simple player-controllable third-person character
  *  Implements a controllable orbiting camera
  */
 UCLASS(abstract)

@@ -27,5 +27,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshComponent* SkeletalMesh;
 
+	AController* MyController;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float GunRange = 5000.0f;
+	
 	void PullTrigger();
 };
