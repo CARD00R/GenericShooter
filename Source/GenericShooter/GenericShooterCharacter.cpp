@@ -50,6 +50,21 @@ AGenericShooterCharacter::AGenericShooterCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
+void AGenericShooterCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	GetMesh()->HideBoneByName("weapon_r",PBO_None);
+	
+	//Weapon Setup
+	AActor* Weapon = GetWorld()->SpawnActor(GunClass);
+	if (Weapon)
+	{
+		Weapon->SetOwner(this);
+		Gun = Cast<Agun>(Weapon);
+	}
+}
+
 void AGenericShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings
@@ -137,5 +152,6 @@ void AGenericShooterCharacter::DoJumpEnd()
 
 void AGenericShooterCharacter::DoShoot()
 {
-	UE_LOG(LogTemp, Error, TEXT("SHOOT!"));
+	if (Gun)
+		Gun->PullTrigger();
 }
