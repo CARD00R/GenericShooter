@@ -18,6 +18,10 @@ public:
 	
 	/** Constructor */
 	AGenericShooterGameMode();
+
+protected:
+	virtual void BeginPlay() override;
+	
 };
 
 
